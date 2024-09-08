@@ -1,0 +1,33 @@
+services:
+  webserver:
+    container_name: webserver
+    build: webserver
+    ports:
+      - 8081:8081
+    volumes:
+      - ./webserver/:/app
+    environment:
+      - BACKEND_HOST=apiserver
+      - BACKEND_PORT=7777
+    depends_on:
+      - apiserver
+    networks:
+      - frontnet
+      - backnet
+
+    # network_mode: "host"
+
+  apiserver:
+    container_name: apiserver
+    build: apiserver
+    ports:
+      - 127.0.0.1:7777:7777
+    volumes:
+      - ./apiserver:/app
+    networks:
+      - backnet
+    # network_mode: "host"
+
+networks:
+  backnet:
+  frontnet:
